@@ -1,0 +1,9 @@
+gunicorn==20.0.4
+Flask==1.1.2
+numpy==1.18.5
+opencv-python-headless==4.4.0.44
+Pillow
+requests==2.24.0
+torch==1.6.0+cu101
+torchvision==0.7.0+cu101
+python-dotenv==0.14.0
