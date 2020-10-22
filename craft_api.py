@@ -13,14 +13,6 @@ load_dotenv()
 
 CRAFT_PORT = int(getenv('CRAFT_PORT'))
 
-
-def jsonify_str(output_list):
-    with app.app_context():
-        with app.test_request_context():
-            result = jsonify(output_list)
-    return result
-
-
 model = CraftDetection()
 
 app = Flask(__name__)
@@ -29,10 +21,9 @@ app.config["CACHE_TYPE"] = "null"
 
 
 def create_error_response(error=None):
-    query_result = {
-        'results': 'Error: ' + str(error)
-    }
-    return query_result
+    return jsonify({
+        'error': 'Error: ' + str(error)
+    })
 
 
 @app.route("/query_box", methods=['POST'])
@@ -42,10 +33,10 @@ def query_box():
         img = Image.open(BytesIO(data)).convert('RGB')
     except Exception as ex:
         print(ex)
-        return jsonify_str(create_error_response(ex))
+        return create_error_response(ex)
 
     img = np.array(img)
-    boxes, _, total_time = model.text_detect(img)
+    boxes, _, _ = model.text_detect(img)
     h, w, _ = img.shape
 
     boxes_dict = []
@@ -58,9 +49,7 @@ def query_box():
             {'x': round(c4[0]/w, 4), 'y': round(c4[1]/h, 4)}
         ]
         boxes_dict.append(box_dict)
-
-    result = {'time': total_time, 'boxes': boxes_dict, 'total_box': len(boxes)}
-    return result
+    return jsonify({"regions": boxes_dict})
 
 
 @app.route("/query_display", methods=['POST'])
@@ -70,7 +59,7 @@ def query_display():
         img = Image.open(BytesIO(data)).convert('RGB')
     except Exception as ex:
         print(ex)
-        return jsonify_str(create_error_response(ex))
+        return create_error_response(ex)
 
     img = np.array(img)
     _, img_draw, _ = model.text_detect(img)
