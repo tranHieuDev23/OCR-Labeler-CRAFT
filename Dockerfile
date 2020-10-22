@@ -1,6 +1,9 @@
-FROM pytorch/pytorch:1.6.0-cuda10.1-cudnn7-runtime
+FROM nvidia/cuda:10.1-runtime-ubuntu18.04
 WORKDIR /app
 COPY requirements.txt .
+RUN apt update && apt install -y python3-pip
+RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
 COPY . .
-CMD ["gunicorn", "craft_api:app"]
+EXPOSE 8000
+CMD ["gunicorn", "craft_api:app", "-b", "0.0.0.0:8000"]
