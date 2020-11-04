@@ -152,6 +152,8 @@ class CraftDetection:
 
     def check_horizontal(self, boxes):
         total_box = len(boxes)
+        if (total_box == 0):
+            return False
         num_box_horizontal = 0
         for box in boxes:
             [[l1, t1], [r1, t2], [r2, b1], [l2, b2]] = box
