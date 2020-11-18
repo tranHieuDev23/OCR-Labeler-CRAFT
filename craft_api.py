@@ -8,7 +8,7 @@ import numpy as np
 from predict_box import CraftDetection
 
 
-load_dotenv()
+load_dotenv('./.env')
 
 
 CRAFT_PORT = int(getenv('CRAFT_PORT'))

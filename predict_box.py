@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from os import getenv
 
 
-load_dotenv()
+load_dotenv('./.env')
 
 
 USE_CUDA = getenv('CRAFT_USE_CUDA') == '1'
