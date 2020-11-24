@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-base-ubuntu18.04
+FROM ubuntu:18.04
 WORKDIR /app
 COPY requirements.txt .
 RUN apt update && apt install -y python3-pip
